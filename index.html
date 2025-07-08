@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Asset Security Checklist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #243654 0%, #1a2a40 50%, #243654 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(36, 54, 84, 0.4);
+            border-radius: 20px;
+            border: 1px solid rgba(4, 102, 200, 0.2);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, rgba(4, 102, 200, 0.3) 0%, rgba(229, 81, 31, 0.3) 100%);
+            padding: 40px;
+            text-align: center;
+            border-bottom: 1px solid rgba(4, 102, 200, 0.2);
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #0466c8, #e5511f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+            font-weight: 300;
+            color: #ffffff;
+        }
+        
+        .progress-bar {
+            background: rgba(36, 54, 84, 0.6);
+            height: 8px;
+            border-radius: 4px;
+            margin: 30px 40px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e5511f, #0466c8);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin: 15px 0 0;
+            font-size: 14px;
+            opacity: 0.7;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .category {
+            margin-bottom: 50px;
+            background: rgba(36, 54, 84, 0.3);
+            border-radius: 16px;
+            border: 1px solid rgba(4, 102, 200, 0.15);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .category:hover {
+            border-color: rgba(4, 102, 200, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .category-header {
+            background: rgba(36, 54, 84, 0.6);
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(4, 102, 200, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .category-icon {
+            font-size: 28px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(4, 102, 200, 0.3), rgba(229, 81, 31, 0.3));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(4, 102, 200, 0.3);
+        }
+        
+        .category-title {
+            font-size: 22px;
+            font-weight: 600;
+            flex: 1;
+        }
+        
+        .category-progress {
+            font-size: 14px;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+        
+        .category-body {
+            padding: 30px;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: rgba(36, 54, 84, 0.3);
+            border-radius: 12px;
+            border: 1px solid rgba(4, 102, 200, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .checklist-item:hover {
+            background: rgba(36, 54, 84, 0.5);
+            border-color: rgba(4, 102, 200, 0.3);
+        }
+        
+        .checklist-item.completed {
+            background: rgba(229, 81, 31, 0.1);
+            border-color: rgba(229, 81, 31, 0.3);
+        }
+        
+        .checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid rgba(4, 102, 200, 0.4);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .checkbox.checked {
+            background: linear-gradient(135deg, #e5511f, #0466c8);
+            border-color: #e5511f;
+        }
+        
+        .checkmark {
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .checkbox.checked .checkmark {
+            opacity: 1;
+        }
+        
+        .item-content {
+            flex: 1;
+        }
+        
+        .item-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+        
+        .item-description {
+            font-size: 14px;
+            opacity: 0.7;
+            line-height: 1.5;
+        }
+        
+        .priority {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        .priority.critical {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .priority.high {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fcd34d;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        
+        .priority.medium {
+            background: rgba(59, 130, 246, 0.2);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        
+        .export-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #e5511f, #0466c8);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(229, 81, 31, 0.3);
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .export-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(229, 81, 31, 0.4);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: rgba(36, 54, 84, 0.5);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(4, 102, 200, 0.2);
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: #e5511f;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SMB Cybersecurity Audit</h1>
+            <p>The digital checklist you need to make sure you're covered.</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">0% Complete</div>
+        </div>
+        
+        <div class="content">
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalItems">47</div>
+                    <div class="stat-label">Total Items</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="completedItems">0</div>
+                    <div class="stat-label">Completed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="criticalItems">12</div>
+                    <div class="stat-label">Critical Items</div>
+                </div>
+            </div>
+            
+            <!-- Multi-Factor Authentication -->
+            <div class="category">
+                <div class="category-header">
+                    <div class="category-icon">🔐</div>
+                    <div class="category-title">Multi-Factor Authentication</div>
+                    <div class="category-progress" data-category="mfa">0/8 items</div>
+                </div>
+                <div class="category-body">
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Classify assets by criticality and sensitivity</div>
+                            <div class="item-description">Critical/Important/Useful + Highly sensitive/Moderate/Low sensitivity matrix</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Identify system dependencies and integrations</div>
+                            <div class="item-description">Map how your CRM connects to email, accounting, e-commerce - cascade risks</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Document shadow IT and unofficial tools</div>
+                            <div class="item-description">Survey employees about cloud services, mobile apps, online tools they use for work</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Assess technical vulnerabilities</div>
+                            <div class="item-description">Unpatched software, weak authentication, poor network segmentation, missing encryption</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Evaluate process vulnerabilities</div>
+                            <div class="item-description">Security policies, incident response, backup testing, vendor requirements</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Identify industry-specific threat actors</div>
+                            <div class="item-description">Cybercriminals, competitors, nation-states - who would target your business and why</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Map common attack vectors for your industry</div>
+                            <div class="item-description">Email attacks, web vulnerabilities, network exploitation, physical access, supply chain</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Calculate risk ratings using likelihood × impact</div>
+                            <div class="item-description">Prioritize high-value assets with known vulnerabilities facing active threats</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Create formal risk register</div>
+                            <div class="item-description">Document risks, impacts, likelihood, current controls, proposed treatments</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Establish quarterly risk review process</div>
+                            <div class="item-description">Reassess major risks, evaluate control effectiveness, update risk register</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Plan annual comprehensive risk assessment</div>
+                            <div class="item-description">Full review of threat landscape, business changes, new vulnerabilities</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button class="export-button" onclick="exportProgress()">📤 Export Progress</button>
+    
+    <script>
+        // Initialize the checklist functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeChecklist();
+        });
+        
+        function initializeChecklist() {
+            const checklistItems = document.querySelectorAll('.checklist-item');
+            
+            checklistItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    toggleItem(this);
+                });
+            });
+            
+            updateProgress();
+        }
+        
+        function toggleItem(item) {
+            const checkbox = item.querySelector('.checkbox');
+            const isCompleted = item.classList.contains('completed');
+            
+            if (isCompleted) {
+                item.classList.remove('completed');
+                checkbox.classList.remove('checked');
+            } else {
+                item.classList.add('completed');
+                checkbox.classList.add('checked');
+            }
+            
+            updateProgress();
+        }
+        
+        function updateProgress() {
+            const allItems = document.querySelectorAll('.checklist-item');
+            const completedItems = document.querySelectorAll('.checklist-item.completed');
+            const totalCount = allItems.length;
+            const completedCount = completedItems.length;
+            const progressPercentage = Math.round((completedCount / totalCount) * 100);
+            
+            // Update overall progress
+            document.getElementById('progressFill').style.width = progressPercentage + '%';
+            document.getElementById('progressText').textContent = progressPercentage + '% Complete';
+            document.getElementById('completedItems').textContent = completedCount;
+            document.getElementById('totalItems').textContent = totalCount;
+            
+            // Update category progress
+            const categories = ['mfa', 'passwords', 'endpoints', 'backup', 'training', 'risk'];
+            categories.forEach(category => {
+                const categoryItems = document.querySelectorAll(`[data-category="${category}"]`);
+                const categoryCompleted = document.querySelectorAll(`[data-category="${category}"].completed`);
+                const categoryProgress = document.querySelector(`[data-category="${category}"].category-progress`);
+                
+                if (categoryProgress) {
+                    categoryProgress.textContent = `${categoryCompleted.length}/${categoryItems.length} items`;
+                }
+            });
+            
+            // Count critical items
+            const criticalItems = document.querySelectorAll('.priority.critical').length;
+            document.getElementById('criticalItems').textContent = criticalItems;
+        }
+        
+        function exportProgress() {
+            const completedItems = [];
+            const pendingItems = [];
+            
+            document.querySelectorAll('.checklist-item').forEach(item => {
+                const title = item.querySelector('.item-title').textContent;
+                const description = item.querySelector('.item-description').textContent;
+                const priority = item.querySelector('.priority').textContent;
+                const category = item.getAttribute('data-category');
+                const isCompleted = item.classList.contains('completed');
+                
+                const itemData = {
+                    title,
+                    description,
+                    priority,
+                    category
+                };
+                
+                if (isCompleted) {
+                    completedItems.push(itemData);
+                } else {
+                    pendingItems.push(itemData);
+                }
+            });
+            
+            const exportData = {
+                timestamp: new Date().toISOString(),
+                summary: {
+                    total: completedItems.length + pendingItems.length,
+                    completed: completedItems.length,
+                    pending: pendingItems.length,
+                    progress: Math.round((completedItems.length / (completedItems.length + pendingItems.length)) * 100) + '%'
+                },
+                completedItems,
+                pendingItems
+            };
+            
+            // Create and download JSON file
+            const dataStr = JSON.stringify(exportData, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `cybersecurity-audit-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+        }
+    </script>
+</body>
+</html>="mfa">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Enable MFA on primary business email accounts</div>
+                            <div class="item-description">Gmail, Outlook, or your email provider - use app-based authentication</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="mfa">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Secure all banking and financial accounts with MFA</div>
+                            <div class="item-description">Business bank accounts, payment processors, accounting software</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="mfa">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Add MFA to domain registrar and hosting accounts</div>
+                            <div class="item-description">GoDaddy, Namecheap, hosting providers - these control your online presence</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="mfa">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Enable MFA on cloud storage accounts</div>
+                            <div class="item-description">Google Drive, Dropbox, OneDrive, Box - wherever business data lives</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="mfa">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Secure social media business accounts</div>
+                            <div class="item-description">Facebook, LinkedIn, Instagram, Twitter business profiles</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="mfa">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Add MFA to business software admin accounts</div>
+                            <div class="item-description">CRM, project management, marketing tools - anything with admin access</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="mfa">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Set up backup authentication methods</div>
+                            <div class="item-description">Backup codes, secondary devices, recovery options for when primary device fails</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="mfa">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Document MFA setup and recovery procedures</div>
+                            <div class="item-description">Who has access, how to recover locked accounts, backup contact methods</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Password Management -->
+            <div class="category">
+                <div class="category-header">
+                    <div class="category-icon">🗝️</div>
+                    <div class="category-title">Password Management</div>
+                    <div class="category-progress" data-category="passwords">0/6 items</div>
+                </div>
+                <div class="category-body">
+                    <div class="checklist-item" data-category="passwords">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Deploy business-grade password manager</div>
+                            <div class="item-description">1Password Business, Bitwarden Business, or Dashlane Business for team management</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="passwords">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Migrate shared account passwords to secure sharing</div>
+                            <div class="item-description">Social media, vendor portals, marketing tools - stop sharing via text/email</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="passwords">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Run password security audit</div>
+                            <div class="item-description">Identify weak, reused, or compromised passwords using password manager tools</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="passwords">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Generate unique passwords for critical accounts</div>
+                            <div class="item-description">Banking, email, admin accounts - replace any reused passwords immediately</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="passwords">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Set up employee offboarding procedures</div>
+                            <div class="item-description">Process to remove access and change shared passwords when employees leave</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="passwords">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Remove passwords from browsers and documents</div>
+                            <div class="item-description">Clear saved passwords from browsers, delete password spreadsheets and text files</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Endpoint Protection -->
+            <div class="category">
+                <div class="category-header">
+                    <div class="category-icon">🛡️</div>
+                    <div class="category-title">Endpoint Protection</div>
+                    <div class="category-progress" data-category="endpoints">0/8 items</div>
+                </div>
+                <div class="category-body">
+                    <div class="checklist-item" data-category="endpoints">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Install modern endpoint protection on all business computers</div>
+                            <div class="item-description">Replace basic antivirus with EDR solutions like Microsoft Defender for Business</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="endpoints">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Enable automatic security updates</div>
+                            <div class="item-description">Operating systems, browsers, and business applications - patch management is critical</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="endpoints">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Encrypt all business laptops and mobile devices</div>
+                            <div class="item-description">BitLocker, FileVault, or device encryption to protect data if devices are lost/stolen</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="endpoints">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Set up remote wipe capabilities</div>
+                            <div class="item-description">MDM solutions to remotely wipe business data from lost or stolen devices</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="endpoints">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Implement application control policies</div>
+                            <div class="item-description">Restrict which applications can run on business devices - prevent unauthorized software</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="endpoints">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Secure USB and removable media access</div>
+                            <div class="item-description">Disable or restrict USB ports to prevent malware introduction and data theft</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="endpoints">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Configure secure browser settings</div>
+                            <div class="item-description">Enable security features, disable unnecessary plugins, consider browser isolation</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="endpoints">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Inventory all devices accessing business data</div>
+                            <div class="item-description">Document computers, phones, tablets, IoT devices - you can't protect what you don't know exists</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Data Backup & Recovery -->
+            <div class="category">
+                <div class="category-header">
+                    <div class="category-icon">💾</div>
+                    <div class="category-title">Data Backup & Recovery</div>
+                    <div class="category-progress" data-category="backup">0/7 items</div>
+                </div>
+                <div class="category-body">
+                    <div class="checklist-item" data-category="backup">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Implement 3-2-1 backup strategy</div>
+                            <div class="item-description">3 copies of data, 2 different storage types, 1 offsite/air-gapped copy</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="backup">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Set up automated daily backups for critical data</div>
+                            <div class="item-description">Customer databases, financial records, active projects - automatic scheduling</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="backup">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Test backup recovery monthly</div>
+                            <div class="item-description">Actually restore files to verify backups work - 34% of backups fail when needed</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="backup">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Create air-gapped backup copies</div>
+                            <div class="item-description">Offline backups that ransomware cannot encrypt - disconnect after backup completes</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="backup">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Document recovery priorities and procedures</div>
+                            <div class="item-description">What gets restored first, who knows how to do it, contact information for emergencies</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="backup">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Backup application configurations and settings</div>
+                            <div class="item-description">Don't just backup data - include configs needed to use that data</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="backup">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Secure backup credentials separately</div>
+                            <div class="item-description">Use different credentials for backup systems - don't let attackers access backups too</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Employee Training -->
+            <div class="category">
+                <div class="category-header">
+                    <div class="category-icon">👥</div>
+                    <div class="category-title">Employee Training & Awareness</div>
+                    <div class="category-progress" data-category="training">0/6 items</div>
+                </div>
+                <div class="category-body">
+                    <div class="checklist-item" data-category="training">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Conduct baseline security awareness assessment</div>
+                            <div class="item-description">Simple phishing simulation to identify who needs the most training support</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="training">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Create role-specific security training</div>
+                            <div class="item-description">Finance: payment fraud, HR: personal data, Leadership: targeted attacks</div>
+                            <div class="priority high">High</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="training">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Establish clear incident reporting procedures</div>
+                            <div class="item-description">Who to contact, what information to provide, no-blame reporting culture</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="training">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Implement monthly security micro-training</div>
+                            <div class="item-description">5-minute updates about new threats, celebrate good security behavior</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="training">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Practice with real tools and scenarios</div>
+                            <div class="item-description">Use actual email system for reporting practice, real login pages for phishing examples</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category="training">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Track behavior change, not just completion rates</div>
+                            <div class="item-description">Measure improved phishing resistance, increased reporting, better policy adherence</div>
+                            <div class="priority medium">Medium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Risk Assessment -->
+            <div class="category">
+                <div class="category-header">
+                    <div class="category-icon">📊</div>
+                    <div class="category-title">Risk Assessment & Asset Management</div>
+                    <div class="category-progress" data-category="risk">0/12 items</div>
+                </div>
+                <div class="category-body">
+                    <div class="checklist-item" data-category="risk">
+                        <div class="checkbox"><span class="checkmark">✓</span></div>
+                        <div class="item-content">
+                            <div class="item-title">Create comprehensive digital asset inventory</div>
+                            <div class="item-description">Customer databases, financial records, IP, employee data, vendor data, email archives</div>
+                            <div class="priority critical">Critical</div>
+                        </div>
+                    </div>
+                    <div class="checklist-item" data-category
